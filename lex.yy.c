@@ -846,121 +846,121 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 23 "analyzer.l"
-{ getTotal(yytext, "keyword", keywords); }
+{ getTotal(yytext, "KEYWORD", keywords); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 25 "analyzer.l"
-getTotal(yytext, "string literal", literals);
+getTotal(yytext, "STRING LITERAL", literals);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 27 "analyzer.l"
 {
-	getTotal(yytext, "identifier", identifiers);
+	getTotal(yytext, "IDENTIFIER", identifiers);
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 31 "analyzer.l"
 {
-	getTotal(yytext, "integer", integers);
+	getTotal(yytext, "INTEGER", integers);
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 35 "analyzer.l"
-getTotal(yytext, "float", floats);
+getTotal(yytext, "FLOAT", floats);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 37 "analyzer.l"
-getTotalCountOperator(yytext, "unary", unary_operators);
+getTotalCountOperator(yytext, "UNARY", unary_operators);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 39 "analyzer.l"
-getTotalCountOperator(yytext, "arithmetic", arithmetic_operators);
+getTotalCountOperator(yytext, "ARITHMETIC", arithmetic_operators);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 41 "analyzer.l"
-getTotal(yytext, "separator", separator);
+getTotal(yytext, "SEPARATOR", separator);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 43 "analyzer.l"
-getTotalCountOperator(yytext, "relational", relational_operators);
+getTotalCountOperator(yytext, "RELATIONAL", relational_operators);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 45 "analyzer.l"
-getTotalCountOperator(yytext, "assignment", assignment_operators);
+getTotalCountOperator(yytext, "ASSIGNMENT", assignment_operators);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 47 "analyzer.l"
-getTotalCountOperator(yytext, "logical", logical_operators);
+getTotalCountOperator(yytext, "LOGICAL", logical_operators);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 49 "analyzer.l"
-{ getTotalCountOperator(yytext, "bitwise", bitwise_operators); }
+{ getTotalCountOperator(yytext, "BITWISE", bitwise_operators); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 51 "analyzer.l"
-getTotal(yytext, "question mark", ternary_question_mark);
+getTotal(yytext, "QUESTION MARK", ternary_question_mark);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 53 "analyzer.l"
-getTotal(yytext, "colon bracket", ternary_colon);
+getTotal(yytext, "COLON BRACKET", ternary_colon);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 55 "analyzer.l"
-getTotal(yytext, "terminator", terminator);
+getTotal(yytext, "TERMINATOR", terminator);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 57 "analyzer.l"
-getTotal(yytext, "left paren", left_paren);
+getTotal(yytext, "LEFT PARENTHESIS", left_paren);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 59 "analyzer.l"
-getTotal(yytext, "right paren", right_paren);
+getTotal(yytext, "RIGHT PARENTHESIS", right_paren);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 61 "analyzer.l"
-getTotal(yytext, "left bracket", left_bracket);
+getTotal(yytext, "LEFT BRACKET", left_bracket);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 63 "analyzer.l"
-getTotal(yytext, "right bracket", right_bracket);
+getTotal(yytext, "RIGHT BRACKET", right_bracket);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 65 "analyzer.l"
-getTotal(yytext, "left curly bracket", left_curly_bracket);
+getTotal(yytext, "LEFT CURLY BRACKET", left_curly_bracket);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 67 "analyzer.l"
-getTotal(yytext, "right curly bracket", right_curly_bracket);
+getTotal(yytext, "RIGHT CURLY BRACKET", right_curly_bracket);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 69 "analyzer.l"
-printf("Skipping comment: %s\n\n", yytext);
+printf("Comment skipped: %s\n\n", yytext);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 71 "analyzer.l"
-getTotal(yytext, "punctuation", punctuation);
+getTotal(yytext, "PUNCTUATION", punctuation);
 	YY_BREAK
 case 24:
 #line 74 "analyzer.l"

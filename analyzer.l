@@ -20,55 +20,55 @@ KEYWORDS (auto|break|case|char|const|continue|default|do|double|else|enum|extern
 BITWISE_OPERATORS (&|\||<<|>>|~|\^)
 
 %%
-{KEYWORDS} { getTotal(yytext, "keyword", keywords); }
+{KEYWORDS} { getTotal(yytext, "KEYWORD", keywords); }
 
-["].*["]  getTotal(yytext, "string literal", literals);
+["].*["]  getTotal(yytext, "STRING LITERAL", literals);
 
 [[:alpha:]_][[:alnum:]_]*  {
-	getTotal(yytext, "identifier", identifiers);
+	getTotal(yytext, "IDENTIFIER", identifiers);
 }
 
 [0-9]+ {
-	getTotal(yytext, "integer", integers);
+	getTotal(yytext, "INTEGER", integers);
 }
 
-[0-9]+\.[0-9]+  getTotal(yytext, "float", floats);
+[0-9]+\.[0-9]+  getTotal(yytext, "FLOAT", floats);
 
-[+][+]|[-][-] getTotalCountOperator(yytext, "unary", unary_operators);
+[+][+]|[-][-] getTotalCountOperator(yytext, "UNARY", unary_operators);
 
-[+]|[-]|[*]|[/]|[%]  getTotalCountOperator(yytext, "arithmetic", arithmetic_operators);
+[+]|[-]|[*]|[/]|[%]  getTotalCountOperator(yytext, "ARITHMETIC", arithmetic_operators);
 
-[,] getTotal(yytext, "separator", separator);
+[,] getTotal(yytext, "SEPARATOR", separator);
 
-[>]|[<]|[>=]|[<=]|[==]|[!=] getTotalCountOperator(yytext, "relational", relational_operators);
+[>]|[<]|[>=]|[<=]|[==]|[!=] getTotalCountOperator(yytext, "RELATIONAL", relational_operators);
 
-[+][=]|[-][=]|[*][=]|[/][=]|[=]|[%][=] getTotalCountOperator(yytext, "assignment", assignment_operators);
+[+][=]|[-][=]|[*][=]|[/][=]|[=]|[%][=] getTotalCountOperator(yytext, "ASSIGNMENT", assignment_operators);
 
-[||]|[&&]|[!]  getTotalCountOperator(yytext, "logical", logical_operators);
+[||]|[&&]|[!]  getTotalCountOperator(yytext, "LOGICAL", logical_operators);
 
-{BITWISE_OPERATORS} { getTotalCountOperator(yytext, "bitwise", bitwise_operators); }
+{BITWISE_OPERATORS} { getTotalCountOperator(yytext, "BITWISE", bitwise_operators); }
 
-[?]	getTotal(yytext, "question mark", ternary_question_mark);
+[?]	getTotal(yytext, "QUESTION MARK", ternary_question_mark);
 
-[:] getTotal(yytext, "colon bracket", ternary_colon);
+[:] getTotal(yytext, "COLON BRACKET", ternary_colon);
 
-[;] getTotal(yytext, "terminator", terminator);
+[;] getTotal(yytext, "TERMINATOR", terminator);
 
-[(] getTotal(yytext, "left paren", left_paren);
+[(] getTotal(yytext, "LEFT PARENTHESIS", left_paren);
 
-[)]	getTotal(yytext, "right paren", right_paren);
+[)]	getTotal(yytext, "RIGHT PARENTHESIS", right_paren);
 
-[[]	getTotal(yytext, "left bracket", left_bracket);
+[[]	getTotal(yytext, "LEFT BRACKET", left_bracket);
 
-[]]	getTotal(yytext, "right bracket", right_bracket);
+[]]	getTotal(yytext, "RIGHT BRACKET", right_bracket);
 
-[{]	getTotal(yytext, "left curly bracket", left_curly_bracket);
+[{]	getTotal(yytext, "LEFT CURLY BRACKET", left_curly_bracket);
 
-[}]	getTotal(yytext, "right curly bracket", right_curly_bracket);
+[}]	getTotal(yytext, "RIGHT CURLY BRACKET", right_curly_bracket);
 
-[/][*].*[*][/]|[/][/].*  printf("Skipping comment: %s\n\n", yytext);
+[/][*].*[*][/]|[/][/].*  printf("Comment skipped: %s\n\n", yytext);
 
-[[:punct:]]  getTotal(yytext, "punctuation", punctuation);
+[[:punct:]]  getTotal(yytext, "PUNCTUATION", punctuation);
 
 [ ] | \t | \n  ;
 
