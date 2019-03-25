@@ -1,6 +1,11 @@
 %{
+#include "sds/sds.c"
 #include <stdio.h>
 #include "analyzer.h"
+
+sds identifier_names;
+sds integer_names;
+sds float_names;
 
 void getTotalCountOperator(char* yytext, char * type, int store[2]){
 		printf("%s operator: %s\n\n", type, yytext);
@@ -26,6 +31,8 @@ BITWISE_OPERATORS (&|\||<<|>>|~|\^)
 
 [[:alpha:]_][[:alnum:]_]*  {
 	getTotal(yytext, "IDENTIFIER", identifiers);
+	identifier_names = sdscat(identifier_names, yytext);
+	identifier_names = sdscat(identifier_names, ",");
 }
 
 [0-9]+ {
@@ -80,12 +87,16 @@ int yywrap(void) {
 
 int main(void){
 
-	char filename[50];
-	printf("Enter the source code filename(<filename>.c): \n\n");
+	char inputFile[20];
+	identifier_names = sdsempty();
+	float_names = sdsempty();
+	integer_names = sdsempty();
+	
+	printf("Enter the source code inputFile(<inputFile>.c): \n\n");
 
-	scanf("%s", filename);
+	scanf("%s", inputFile);
 
-	yyin = fopen(filename, "r");
+	yyin = fopen(inputFile, "r");
 
 	yylex();
 	int token_count = literals[TOKEN_COUNT] +
@@ -135,6 +146,20 @@ int lexeme_count =  literals[LEXEME_COUNT] +
 										ternary_colon[LEXEME_COUNT];
 
 	printf("Token count: %d\nLexeme Count: %d\n", token_count, lexeme_count);
+
+	/* split string */
+	int identifierLength = (int) sdslen(identifier_names);
+	int identifierCount = 0;
+
+	/* split string */
+	sds* listIdentifiers = sdssplitlen(identifier_names, identifierLength, ",", 1, &identifierCount);
+
+	printf("\nSymbol Table:\n\n");
+	printf("%-20s%-20s%-20s\n", "Symbol", "Type", "Value");
+
+	for(int i = 0; i<identifierCount; i++){
+		printf("%-20s\n", listIdentifiers[i]);
+	}
 
 	return 0;
 }

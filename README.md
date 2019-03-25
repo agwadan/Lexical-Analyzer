@@ -39,12 +39,17 @@ The next step is to clone or download the code and access the directory using te
 
 ## How to Run the Analyzer
 
-markup: 1. lex analyzer.l .... this compiles the lex file and automatically generates the lex.yy.c file
-markup: 2. cc lex.yy.c .... this compiles our generated "C" source file
-markup: 3. ./a.out .... this runs the executable and gives the output 
+markup: 1. ```lex analyzer.l``` .... this compiles the lex file and automatically generates the lex.yy.c file
+markup: 2. ```cc lex.yy.c``` .... this compiles our generated "C" source file
+markup: 3. ```./a.out``` .... this runs the executable and gives the output 
+
+OR you can just use a combination of all of them ... ```lex analyzer.l && cc lex.yy.c && ./a.out```
 
 ### OUTPUT
 The program will ask for the user to enter a name of a source file which should be lexically analized
 (Here, we have used an example file .... "input.txt")
 
 Then the lexical analizer will run, and print the number of TOKENS and LEXEMES in the file.
+
+### Symbol Table
+The program then prints a symbol table for the input statement

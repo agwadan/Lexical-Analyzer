@@ -551,8 +551,13 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "analyzer.l"
 #line 2 "analyzer.l"
+#include "sds/sds.c"
 #include <stdio.h>
 #include "analyzer.h"
+
+sds identifier_names;
+sds integer_names;
+sds float_names;
 
 void getTotalCountOperator(char* yytext, char * type, int store[2]){
 		printf("%s operator: %s\n\n", type, yytext);
@@ -566,8 +571,8 @@ void getTotal(char* yytext, char * type, int store[2]){
 		store[LEXEME_COUNT] += 1;
 	}
 
-#line 570 "lex.yy.c"
-#line 571 "lex.yy.c"
+#line 575 "lex.yy.c"
+#line 576 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -784,9 +789,9 @@ YY_DECL
 		}
 
 	{
-#line 22 "analyzer.l"
+#line 27 "analyzer.l"
 
-#line 790 "lex.yy.c"
+#line 795 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -845,130 +850,132 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 23 "analyzer.l"
+#line 28 "analyzer.l"
 { getTotal(yytext, "KEYWORD", keywords); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "analyzer.l"
+#line 30 "analyzer.l"
 getTotal(yytext, "STRING LITERAL", literals);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 27 "analyzer.l"
+#line 32 "analyzer.l"
 {
 	getTotal(yytext, "IDENTIFIER", identifiers);
+	identifier_names = sdscat(identifier_names, yytext);
+	identifier_names = sdscat(identifier_names, ",");
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 31 "analyzer.l"
+#line 38 "analyzer.l"
 {
 	getTotal(yytext, "INTEGER", integers);
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 35 "analyzer.l"
+#line 42 "analyzer.l"
 getTotal(yytext, "FLOAT", floats);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 37 "analyzer.l"
+#line 44 "analyzer.l"
 getTotalCountOperator(yytext, "UNARY", unary_operators);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 39 "analyzer.l"
+#line 46 "analyzer.l"
 getTotalCountOperator(yytext, "ARITHMETIC", arithmetic_operators);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 41 "analyzer.l"
+#line 48 "analyzer.l"
 getTotal(yytext, "SEPARATOR", separator);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 43 "analyzer.l"
+#line 50 "analyzer.l"
 getTotalCountOperator(yytext, "RELATIONAL", relational_operators);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 45 "analyzer.l"
+#line 52 "analyzer.l"
 getTotalCountOperator(yytext, "ASSIGNMENT", assignment_operators);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 47 "analyzer.l"
+#line 54 "analyzer.l"
 getTotalCountOperator(yytext, "LOGICAL", logical_operators);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 49 "analyzer.l"
+#line 56 "analyzer.l"
 { getTotalCountOperator(yytext, "BITWISE", bitwise_operators); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 51 "analyzer.l"
+#line 58 "analyzer.l"
 getTotal(yytext, "QUESTION MARK", ternary_question_mark);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 53 "analyzer.l"
+#line 60 "analyzer.l"
 getTotal(yytext, "COLON BRACKET", ternary_colon);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 55 "analyzer.l"
+#line 62 "analyzer.l"
 getTotal(yytext, "TERMINATOR", terminator);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 57 "analyzer.l"
+#line 64 "analyzer.l"
 getTotal(yytext, "LEFT PARENTHESIS", left_paren);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 59 "analyzer.l"
+#line 66 "analyzer.l"
 getTotal(yytext, "RIGHT PARENTHESIS", right_paren);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 61 "analyzer.l"
+#line 68 "analyzer.l"
 getTotal(yytext, "LEFT BRACKET", left_bracket);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 63 "analyzer.l"
+#line 70 "analyzer.l"
 getTotal(yytext, "RIGHT BRACKET", right_bracket);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 65 "analyzer.l"
+#line 72 "analyzer.l"
 getTotal(yytext, "LEFT CURLY BRACKET", left_curly_bracket);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 67 "analyzer.l"
+#line 74 "analyzer.l"
 getTotal(yytext, "RIGHT CURLY BRACKET", right_curly_bracket);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 69 "analyzer.l"
+#line 76 "analyzer.l"
 printf("Comment skipped: %s\n\n", yytext);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 71 "analyzer.l"
+#line 78 "analyzer.l"
 getTotal(yytext, "PUNCTUATION", punctuation);
 	YY_BREAK
 case 24:
-#line 74 "analyzer.l"
+#line 81 "analyzer.l"
 case 25:
-#line 75 "analyzer.l"
+#line 82 "analyzer.l"
 ECHO;
 	YY_BREAK
-#line 972 "lex.yy.c"
+#line 979 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1973,7 +1980,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 75 "analyzer.l"
+#line 82 "analyzer.l"
 
 
 int yywrap(void) {
@@ -1982,12 +1989,16 @@ int yywrap(void) {
 
 int main(void){
 
-	char filename[50];
-	printf("Enter the source code filename(<filename>.c): \n\n");
+	char inputFile[20];
+	identifier_names = sdsempty();
+	float_names = sdsempty();
+	integer_names = sdsempty();
+	
+	printf("Enter the source code inputFile(<inputFile>.c): \n\n");
 
-	scanf("%s", filename);
+	scanf("%s", inputFile);
 
-	yyin = fopen(filename, "r");
+	yyin = fopen(inputFile, "r");
 
 	yylex();
 	int token_count = literals[TOKEN_COUNT] +
@@ -2037,6 +2048,20 @@ int lexeme_count =  literals[LEXEME_COUNT] +
 										ternary_colon[LEXEME_COUNT];
 
 	printf("Token count: %d\nLexeme Count: %d\n", token_count, lexeme_count);
+
+	/* split string */
+	int identifierLength = (int) sdslen(identifier_names);
+	int identifierCount = 0;
+
+	/* split string */
+	sds* listIdentifiers = sdssplitlen(identifier_names, identifierLength, ",", 1, &identifierCount);
+
+	printf("\nSymbol Table:\n\n");
+	printf("%-20s%-20s%-20s\n", "Symbol", "Type", "Value");
+
+	for(int i = 0; i<identifierCount; i++){
+		printf("%-20s\n", listIdentifiers[i]);
+	}
 
 	return 0;
 }
