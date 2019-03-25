@@ -28,7 +28,8 @@ The third part like the first part contans "C" code.
 
 To run this, you need a flex tool installed on your computer. to do this, use the following commands.
 ```sudo apt-get update```
+
 ```sudo apt-get install bison```
+
 ```sudo apt-get install flex```
-```
 
