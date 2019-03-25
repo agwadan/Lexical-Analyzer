@@ -26,7 +26,7 @@ The third part like the first part contans "C" code.
 
 ## Installation
 
-To run this, you need a flex tool installed on your computer. to do this, use the following commands.
+To run this, you need a flex tool installed on your computer. To do this in a linux based system, use the following commands.
 
 ```sudo apt-get update```
 
