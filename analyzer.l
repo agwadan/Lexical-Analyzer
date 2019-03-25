@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include "analyzer.h"
 
-void printAndIncrementOperatorCounts(char* yytext, char * type, int store[2]){
+void getTotalCountOperator(char* yytext, char * type, int store[2]){
 		printf("%s operator: %s\n\n", type, yytext);
 		store[TOKEN_COUNT] = 1;
 		store[LEXEME_COUNT] += 1;
 	}
 
-void printAndIncrementCounts(char* yytext, char * type, int store[2]){
+void getTotal(char* yytext, char * type, int store[2]){
 		printf("%s: %s\n\n", type, yytext);
 		store[TOKEN_COUNT] = 1;
 		store[LEXEME_COUNT] += 1;
@@ -17,103 +17,60 @@ void printAndIncrementCounts(char* yytext, char * type, int store[2]){
 %}
 
 KEYWORDS (auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|int|long|register|return|short|signed|sizeof|static|struct|switch|then|typedef|union|unsigned|void|volatile|while)
-QUOTED_STRING \".*\"
-ARITHMETIC_OPERATORS (\+|-|\*|\/|%)
-RELATIONAL_OPEARATORS (>|<|>=|<=|==|!=)
-LOGICAL_OPERATORS (\|\||&&|!)
 BITWISE_OPERATORS (&|\||<<|>>|~|\^)
-RIGHT_PAREN \)
-SEPARATOR ,
-TERMINATOR ;
-LEFT_CURLY_BRACKET \{
-RIGHT_CURLY_BRACKET \}
-LEFT_BRACKET \[
-RIGHT_BRACKET \]
-COMMENT (\/\*([^*]|\*+[^/])*\*+\/|\/\/.*)
-TERNARY_QUESTION_MARK \?
 
 %%
-{QUOTED_STRING}  {
-	printAndIncrementCounts(yytext, "string literal", literals);
-}
+{KEYWORDS} { getTotal(yytext, "keyword", keywords); }
 
-{KEYWORDS} { printAndIncrementCounts(yytext, "keyword", keywords); }
+["].*["]  getTotal(yytext, "string literal", literals);
 
 [[:alpha:]_][[:alnum:]_]*  {
-	printAndIncrementCounts(yytext, "identifier", identifiers);
+	getTotal(yytext, "identifier", identifiers);
 }
 
 [0-9]+ {
-	printAndIncrementCounts(yytext, "integer", integers);
+	getTotal(yytext, "integer", integers);
 }
 
-[0-9]+\.[0-9]+ {
-	printAndIncrementCounts(yytext, "float", floats);
-}
+[0-9]+\.[0-9]+  getTotal(yytext, "float", floats);
 
-[+][+]|[-][-] printAndIncrementOperatorCounts(yytext, "unary", unary_operators);
+[+][+]|[-][-] getTotalCountOperator(yytext, "unary", unary_operators);
 
-{ARITHMETIC_OPERATORS}  {
-	printAndIncrementOperatorCounts(yytext, "arithmetic", arithmetic_operators);
-}
+[+]|[-]|[*]|[/]|[%]  getTotalCountOperator(yytext, "arithmetic", arithmetic_operators);
 
-{RELATIONAL_OPEARATORS}  {
-	printAndIncrementOperatorCounts(yytext, "relational", relational_operators);
-}
+[,] getTotal(yytext, "separator", separator);
 
-[+=]|[-=]|[*=]|[/=]|[=]|[%=] printAndIncrementOperatorCounts(yytext, "assignment", assignment_operators);
+[>]|[<]|[>=]|[<=]|[==]|[!=] getTotalCountOperator(yytext, "relational", relational_operators);
 
-{LOGICAL_OPERATORS}  {
-	printAndIncrementOperatorCounts(yytext, "logical", logical_operators);
-}
+[+][=]|[-][=]|[*][=]|[/][=]|[=]|[%][=] getTotalCountOperator(yytext, "assignment", assignment_operators);
 
-{BITWISE_OPERATORS}  {
-	printAndIncrementOperatorCounts(yytext, "bitwise", bitwise_operators);
-}
+[||]|[&&]|[!]  getTotalCountOperator(yytext, "logical", logical_operators);
 
-{TERNARY_QUESTION_MARK} {
-	printAndIncrementCounts(yytext, "question mark", ternary_question_mark);
-}
+{BITWISE_OPERATORS} { getTotalCountOperator(yytext, "bitwise", bitwise_operators); }
 
-[:] {
-	printAndIncrementCounts(yytext, "colon bracket", ternary_colon);
-}
+[?]	getTotal(yytext, "question mark", ternary_question_mark);
 
-{TERMINATOR}  {
-	printAndIncrementCounts(yytext, "terminator", terminator);
-}
+[:] getTotal(yytext, "colon bracket", ternary_colon);
 
-[(] printAndIncrementCounts(yytext, "left paren", left_paren);
+[;] getTotal(yytext, "terminator", terminator);
 
-{RIGHT_PAREN} {
-	printAndIncrementCounts(yytext, "right paren", right_paren);
-}
+[(] getTotal(yytext, "left paren", left_paren);
 
-{LEFT_BRACKET} {
-	printAndIncrementCounts(yytext, "left bracket", left_bracket);
-}
+[)]	getTotal(yytext, "right paren", right_paren);
 
-{RIGHT_BRACKET} {
-	printAndIncrementCounts(yytext, "right bracket", right_bracket);
-}
+[[]	getTotal(yytext, "left bracket", left_bracket);
 
-{LEFT_CURLY_BRACKET} {
-	printAndIncrementCounts(yytext, "left curly bracket", left_curly_bracket);
-}
+[]]	getTotal(yytext, "right bracket", right_bracket);
 
-{RIGHT_CURLY_BRACKET} {
-	printAndIncrementCounts(yytext, "right curly bracket", right_curly_bracket);
-}
+[{]	getTotal(yytext, "left curly bracket", left_curly_bracket);
 
-{COMMENT} {
-	printf("Skipping comment: %s\n\n", yytext);
-}
+[}]	getTotal(yytext, "right curly bracket", right_curly_bracket);
 
-[[:punct:]] {
-	printAndIncrementCounts(yytext, "punctuation", punctuation);
-}
+[/][*].*[*][/]|[/][/].*  printf("Skipping comment: %s\n\n", yytext);
 
-[([:blank:]|\n)]  {}
+[[:punct:]]  getTotal(yytext, "punctuation", punctuation);
+
+[ ] | \t | \n  ;
 
 %%
 
@@ -122,7 +79,14 @@ int yywrap(void) {
 }
 
 int main(void){
-	yyin = fopen("input.txt", "r");
+
+	char filename[50];
+	printf("Enter the source code filename(<filename>.c): \n\n");
+
+	scanf("%s", filename);
+
+	yyin = fopen(filename, "r");
+
 	yylex();
 	int token_count = literals[TOKEN_COUNT] +
 										identifiers[TOKEN_COUNT] +
